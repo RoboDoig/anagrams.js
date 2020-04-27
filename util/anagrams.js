@@ -58,7 +58,7 @@ function wordPossible(word, availableLetters, availableWords) {
     // first, are all letters from available word present in the target word?
     availableWords.forEach(function (availableWord, index) {
         var availableWordCopy = Array.from(availableWord.split(''));
-        var wordCopy = Array.from(charArray);;
+        var wordCopy = Array.from(charArray);
 
         charArray.forEach(function (char, c) {
             var matchIndex = availableWordCopy.findIndex(letter => letter === char)
@@ -69,18 +69,36 @@ function wordPossible(word, availableLetters, availableWords) {
         });
 
         // if so, what letters remain and are they in the remaining available letters?
-        if (availableWordCopy.every(letter => letter==='')) {
+        if (availableWordCopy.every(letter => letter === '')) {
             var finalLetters = wordCopy.filter(letter => letter !== '');
-            
+            var remainingLetters = Array.from(availableLetters);
+            var matchedLetterIndices = [];
+            finalLetters.forEach(function (char, index) {
+                var matchIndex = remainingLetters.findIndex(letter => letter === char);
+                if (matchIndex >= 0) {
+                    remainingLetters[matchIndex] = '';
+                    matchedLetterIndices.push(matchIndex);
+                }
+            });
+
+            if (matchedLetterIndices.length === finalLetters.length) {
+                result = {wordPossible: true,
+                    method: 'combination',
+                    letterIndices: matchedLetterIndices,
+                    wordIndex: index
+                }
+            }
         }
     });
 
+    return result;
+
     // default condition
-    // return {wordPossible: false, method: 'none', letterIndices: [], wordIndex: []}
+    return {wordPossible: false, method: 'none', letterIndices: [], wordIndex: []}
 }
 
-var availableLetters = ['d', 'o', 'x', 's'];
-var availableWords = ['god', 'link'];
-
-var result = wordPossible('godsend', availableLetters, availableWords);
-console.log(result);
+// var availableLetters = ['d', 'o', 'a', 'x', 'l', 's', 'e', 'n'];
+// var availableWords = ['god', 'link', 'hit'];
+//
+// var result = wordPossible('hliat', availableLetters, availableWords);
+// console.log(result);
