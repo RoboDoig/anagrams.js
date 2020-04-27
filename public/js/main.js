@@ -55,8 +55,14 @@ function updatePlayerDisplay(users) {
             div.classList.add('player-info');
         }
 
-        div.innerHTML = `<h2>${user.username}</h2><h3>Word</h3><h3>Word</h3>`;
+        div.innerHTML = `<h2>${user.username}</h2><div class="word-container"></div>`;
         playerArea.appendChild(div);
+
+        let wordContainer = div.querySelector('.word-container');
+        console.log(user, wordContainer, index);
+        console.log(user.words.map(word => `<h3>${word}</h3>`).join(''));
+
+        wordContainer.innerHTML = user.words.map(word => `<h3>${word}</h3>`).join('');
     });
 }
 

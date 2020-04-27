@@ -41,10 +41,13 @@ io.on('connection', socket => {
 
     // Run whe client submits word
     socket.on('word-submit', word => {
-        console.log(word);
+        getUserFromID(socket.id).words.push(word);
         // check that the word is valid
 
         // check how it can be made from the available letters
+
+        // update the player client
+        io.emit('update-players', getUsers());
     });
 
     // Run when client disconnects
