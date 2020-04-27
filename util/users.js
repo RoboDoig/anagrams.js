@@ -4,9 +4,9 @@ const users = [];
 function userJoin(id, username) {
     let user;
     if (users.length === 0) {
-        user = {id, username, active: true};
+        user = {id, username, active: true, words: []};
     } else {
-        user = {id, username, active: false};
+        user = {id, username, active: false, words: []};
     }
 
     users.push(user);

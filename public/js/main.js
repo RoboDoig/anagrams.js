@@ -78,7 +78,7 @@ function revealRequest(index) {
 // submit word
 function wordSubmit() {
     // send word to server to check
-    socket.emit('word-submit', wordInput.value);
+    socket.emit('word-submit', wordInput.value.toUpperCase());
 
     // clear input
     wordInput.value = '';

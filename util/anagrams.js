@@ -16,7 +16,7 @@ function wordValid(word) {
 // Check if word can be made, returns how word can be made and which letters or words to use
 function wordPossible(word, availableLetters, availableWords) {
     // can word be made just from available letters?
-    var charArray = word.split('');
+    var charArray = word.toUpperCase().split('');
     var remainingLetters = Array.from(availableLetters);
     var matchedLetterIndices = [];
     var result = {};
@@ -97,8 +97,8 @@ function wordPossible(word, availableLetters, availableWords) {
     return {wordPossible: false, method: 'none', letterIndices: [], wordIndex: []}
 }
 
-// var availableLetters = ['d', 'o', 'a', 'x', 'l', 's', 'e', 'n'];
-// var availableWords = ['god', 'link', 'hit'];
-//
-// var result = wordPossible('hliat', availableLetters, availableWords);
-// console.log(result);
+var availableLetters = ['D', 'O', 'A', 'X', 'L', 'S', 'E', 'N'];
+var availableWords = ['GOD', 'LINK', 'HIT'];
+
+var result = wordPossible('hliat', availableLetters, availableWords);
+console.log(result);

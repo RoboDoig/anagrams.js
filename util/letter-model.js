@@ -3,7 +3,7 @@ function generateLetterModel(letters) {
     let letterArray = [];
     letters.forEach(function (letter, index) {
         letterArray.push({
-            letter,
+            letter: letter.toUpperCase(),
             index,
             revealed: false,
             used: false,
@@ -19,7 +19,12 @@ function revealLetter(letterModel, index) {
     letterModel[index].available = true;
 }
 
+function getAvailableLetters(letterModel) {
+    return letterModel.filter(letter => letter.available === true && letter.revealed === true);
+}
+
 module.exports = {
     generateLetterModel,
-    revealLetter
+    revealLetter,
+    getAvailableLetters
 };

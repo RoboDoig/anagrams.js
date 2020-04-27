@@ -3,7 +3,7 @@ const http = require('http');
 const express = require('express');
 const socketio = require('socket.io');
 
-const {generateLetterModel, revealLetter} = require('./util/letter-model');
+const {generateLetterModel, revealLetter, getAvailableLetters} = require('./util/letter-model');
 const {userJoin, getUserFromID, getUsers, userLeave, advanceActiveUser} = require('./util/users');
 
 const app = express();
@@ -30,11 +30,12 @@ io.on('connection', socket => {
 
     // Run when client requests letter reveal
     socket.on('reveal', index => {
-        if (getUserFromID(socket.id).active) {
+        if (getUserFromID(socket.id).active && letterModel[index.index].revealed === false) {
             revealLetter(letterModel, index.index);
             advanceActiveUser();
             io.emit('update-players', getUsers());
             io.emit('update-letters', letterModel);
+            console.log(getAvailableLetters(letterModel));
         }
     });
 
