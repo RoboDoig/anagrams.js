@@ -1,5 +1,9 @@
 // HTML elements
 const letterArea = document.querySelector('.letter-area');
+const playerArea = document.querySelector('.player-info-container');
+const wordInput = document.querySelector('.word-input');
+const submitButton = document.querySelector('.word-submit');
+submitButton.addEventListener("click", wordSubmit);
 
 // Get username and room from URL
 const {username} = Qs.parse(location.search, {
@@ -10,17 +14,21 @@ const {username} = Qs.parse(location.search, {
 const socket = io();
 
 // Join server
-socket.emit('joinRoom', {username});
+socket.emit('join', username);
 
-// Message handling
+// When server updates letters
 socket.on('update-letters', letterModel => {
-    console.log(letterModel);
     updateLetterDisplay(letterModel)
+});
+
+// When new player joins
+socket.on('update-players', users => {
+    updatePlayerDisplay(users)
 });
 
 function updateLetterDisplay(letterModel) {
     clearLetterDisplay();
-    letterModel.forEach(function(letter, index) {
+    letterModel.forEach(function (letter, index) {
         let div = document.createElement('div');
         div.classList.add('letter');
 
@@ -30,7 +38,6 @@ function updateLetterDisplay(letterModel) {
             div.innerHTML = `<h1></h1>`;
         }
 
-        //div.innerHTML = `<h1></h1>`;
         letterArea.appendChild(div);
         div.addEventListener('click', (e) => {
             revealRequest(index);
@@ -38,14 +45,43 @@ function updateLetterDisplay(letterModel) {
     })
 }
 
+function updatePlayerDisplay(users) {
+    clearPlayerDisplay();
+    users.forEach(function (user, index) {
+        let div = document.createElement('div');
+        if (user.active) {
+            div.classList.add('player-info-active');
+        } else {
+            div.classList.add('player-info');
+        }
+
+        div.innerHTML = `<h2>${user.username}</h2><h3>Word</h3><h3>Word</h3>`;
+        playerArea.appendChild(div);
+    });
+}
+
 // clear letter area
 function clearLetterDisplay() {
     letterArea.innerHTML = '';
 }
 
+// clear player display
+function clearPlayerDisplay() {
+    playerArea.innerHTML = '';
+}
+
 // send reveal request
 function revealRequest(index) {
     socket.emit('reveal', {index});
+}
+
+// submit word
+function wordSubmit() {
+    // send word to server to check
+    socket.emit('word-submit', wordInput.value);
+
+    // clear input
+    wordInput.value = '';
 }
 
 // // Letter parameters

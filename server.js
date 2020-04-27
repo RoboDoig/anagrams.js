@@ -3,7 +3,8 @@ const http = require('http');
 const express = require('express');
 const socketio = require('socket.io');
 
-const generateLetterModel = require('./util/letter-model');
+const {generateLetterModel, revealLetter} = require('./util/letter-model');
+const {userJoin, getUserFromID, getUsers, userLeave, advanceActiveUser} = require('./util/users');
 
 const app = express();
 const server = http.createServer(app);
@@ -18,21 +19,42 @@ let letterModel = generateLetterModel(startingLetters);
 
 // Run when client connects
 io.on('connection', socket => {
+    // Register user
+    socket.on('join', username => {
+        const user = userJoin(socket.id, username);
+        io.emit('update-players', getUsers());
+    });
+
     // Send letter info to user
     socket.emit('update-letters', letterModel);
 
     // Run when client requests letter reveal
     socket.on('reveal', index => {
-        console.log(index.index);
+        if (getUserFromID(socket.id).active) {
+            revealLetter(letterModel, index.index);
+            advanceActiveUser();
+            io.emit('update-players', getUsers());
+            io.emit('update-letters', letterModel);
+        }
+    });
+
+    // Run whe client submits word
+    socket.on('word-submit', word => {
+        console.log(word);
+        // check that the word is valid
+
+        // check how it can be made from the available letters
     });
 
     // Run when client disconnects
     socket.on('disconnect', () => {
-        console.log('client disconnected');
+        const user = userLeave(socket.id);
+        io.emit('update-players', getUsers());
     })
 });
 
 
+// Server
 const PORT = process.env.PORT || 3000;
 
 server.listen(PORT, () => console.log(`Server running on port ${PORT}`));

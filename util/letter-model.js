@@ -6,11 +6,20 @@ function generateLetterModel(letters) {
             letter,
             index,
             revealed: false,
-            used: false
+            used: false,
+            available: true
         })
     });
 
     return letterArray;
 }
 
-module.exports = generateLetterModel;
+function revealLetter(letterModel, index) {
+    letterModel[index].revealed = true;
+    letterModel[index].available = true;
+}
+
+module.exports = {
+    generateLetterModel,
+    revealLetter
+};
