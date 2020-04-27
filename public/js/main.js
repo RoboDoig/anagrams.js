@@ -32,7 +32,7 @@ function updateLetterDisplay(letterModel) {
         let div = document.createElement('div');
         div.classList.add('letter');
 
-        if (letter.revealed && letter.available) {
+        if (letter.revealed) {
             div.innerHTML = `<h1>${letter.letter}</h1>`;
         } else {
             div.innerHTML = `<h1></h1>`;

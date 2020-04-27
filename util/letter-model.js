@@ -6,7 +6,6 @@ function generateLetterModel(letters) {
             letter: letter.toUpperCase(),
             index,
             revealed: false,
-            available: true
         })
     });
 
@@ -19,12 +18,12 @@ function revealLetter(letterModel, index) {
 }
 
 function getAvailableLetters(letterModel) {
-    return letterModel.filter(letter => letter.available === true && letter.revealed === true).map(letter => letter.letter);
+    return letterModel.filter(letter => letter.revealed === true).map(letter => letter.letter);
 }
 
 function useLetters(letterModel, indices) {
     indices.forEach(index => {
-        letterModel[index].available = false;
+        letterModel[index].letter = '';
     })
 }
 
