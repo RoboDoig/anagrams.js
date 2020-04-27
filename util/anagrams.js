@@ -97,8 +97,10 @@ function wordPossible(word, availableLetters, availableWords) {
     return {wordPossible: false, method: 'none', letterIndices: [], wordIndex: []}
 }
 
-var availableLetters = ['D', 'O', 'A', 'X', 'L', 'S', 'E', 'N'];
-var availableWords = ['GOD', 'LINK', 'HIT'];
+module.exports = {wordValid, wordPossible};
 
-var result = wordPossible('hliat', availableLetters, availableWords);
-console.log(result);
+// var availableLetters = ['D', 'O', 'A', 'X', 'L', 'S', 'E', 'N'];
+// var availableWords = ['GOD', 'LINK', 'HIT'];
+//
+// var result = wordPossible('hliat', availableLetters, availableWords);
+// console.log(result);

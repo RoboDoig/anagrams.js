@@ -3,8 +3,9 @@ const http = require('http');
 const express = require('express');
 const socketio = require('socket.io');
 
-const {generateLetterModel, revealLetter, getAvailableLetters} = require('./util/letter-model');
+const {generateLetterModel, revealLetter, getAvailableLetters, useLetters} = require('./util/letter-model');
 const {userJoin, getUserFromID, getUsers, userLeave, advanceActiveUser} = require('./util/users');
+const {wordValid, wordPossible} = require('./util/anagrams');
 
 const app = express();
 const server = http.createServer(app);
@@ -31,23 +32,36 @@ io.on('connection', socket => {
     // Run when client requests letter reveal
     socket.on('reveal', index => {
         if (getUserFromID(socket.id).active && letterModel[index.index].revealed === false) {
+            // if it is this user's turn, reveal a letter if available
             revealLetter(letterModel, index.index);
+
+            // go to next player turn
             advanceActiveUser();
+
+            // update the player client
             io.emit('update-players', getUsers());
             io.emit('update-letters', letterModel);
-            console.log(getAvailableLetters(letterModel));
         }
     });
 
     // Run whe client submits word
     socket.on('word-submit', word => {
-        getUserFromID(socket.id).words.push(word);
         // check that the word is valid
+        if (wordValid(word)) {
+            // check how it can be made from the available letters
+            var result = wordPossible(word, getAvailableLetters(letterModel), []);
+            if (result.wordPossible) {
+                // add to users words
+                getUserFromID(socket.id).words.push(word);
 
-        // check how it can be made from the available letters
+                // remove used letters
+                useLetters(letterModel, result.letterIndices);
 
-        // update the player client
-        io.emit('update-players', getUsers());
+                // update the player client
+                io.emit('update-players', getUsers());
+                io.emit('update-letters', letterModel);
+            }
+        }
     });
 
     // Run when client disconnects
