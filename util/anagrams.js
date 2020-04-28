@@ -34,7 +34,7 @@ function wordPossible(word, availableLetters, availableWords) {
             wordPossible: true,
             method: 'available-letters',
             letterIndices: matchedLetterIndices,
-            wordIndex: []
+            wordIndex: -1
         };
 
         return result;

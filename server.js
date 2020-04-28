@@ -3,8 +3,8 @@ const http = require('http');
 const express = require('express');
 const socketio = require('socket.io');
 
-const {generateLetterModel, revealLetter, getAvailableLetters, useLetters} = require('./util/letter-model');
-const {userJoin, getUserFromID, getUsers, userLeave, advanceActiveUser} = require('./util/users');
+const {generateLetterModel, revealLetter, getLetters, useLetters} = require('./util/letter-model');
+const {userJoin, getUserFromID, getUsers, userLeave, advanceActiveUser, removeWord} = require('./util/users');
 const {wordValid, wordPossible} = require('./util/anagrams');
 
 const app = express();
@@ -48,18 +48,34 @@ io.on('connection', socket => {
     socket.on('word-submit', word => {
         // check that the word is valid
         if (wordValid(word)) {
-            // check how it can be made from the available letters
-            var result = wordPossible(word, getAvailableLetters(letterModel), []);
-            if (result.wordPossible) {
-                // add to users words
-                getUserFromID(socket.id).words.push(word);
+            var allUsers = getUsers();
+            var i;
+            var result;
+            for (i = 0; i < allUsers.length; i++) {
+                var userWords = allUsers[i].words;
+                result = wordPossible(word, getLetters(letterModel), userWords);
+                console.log(result);
+                if (result.wordPossible) {
+                    // remove used letters
+                    if (result.letterIndices.length > 0) {
+                        useLetters(letterModel, result.letterIndices);
+                    }
 
-                // remove used letters
-                useLetters(letterModel, result.letterIndices);
+                    // remove used words
+                    if (result.wordIndex > -1) {
+                        removeWord(i, result.wordIndex);
+                    }
 
-                // update the player client
-                io.emit('update-players', getUsers());
-                io.emit('update-letters', letterModel);
+                    // add to users words
+                    getUserFromID(socket.id).words.push(word);
+
+                    // update the player client
+                    io.emit('update-players', getUsers());
+                    io.emit('update-letters', letterModel);
+
+                    // break from loop
+                    break;
+                }
             }
         }
     });

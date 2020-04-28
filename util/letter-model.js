@@ -17,9 +17,19 @@ function revealLetter(letterModel, index) {
     letterModel[index].available = true;
 }
 
-function getAvailableLetters(letterModel) {
-    return letterModel.filter(letter => letter.revealed === true).map(letter => letter.letter);
+function getLetters(letterModel) {
+    return letterModel.map(letter => {
+        if (letter.revealed) {
+            return letter.letter;
+        } else {
+            return '';
+        }
+    });
 }
+
+// function getAvailableLetters(letterModel) {
+//     return letterModel.filter(letter => letter.revealed === true).map(letter => letter.letter);
+// }
 
 function useLetters(letterModel, indices) {
     indices.forEach(index => {
@@ -30,6 +40,6 @@ function useLetters(letterModel, indices) {
 module.exports = {
     generateLetterModel,
     revealLetter,
-    getAvailableLetters,
+    getLetters,
     useLetters
 };

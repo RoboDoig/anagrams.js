@@ -50,10 +50,15 @@ function advanceActiveUser() {
     }
 }
 
+function removeWord(userIndex, wordIndex) {
+    users[userIndex].words.splice(wordIndex, 1);
+}
+
 module.exports = {
     userJoin,
     getUserFromID,
     getUsers,
     userLeave,
-    advanceActiveUser
+    advanceActiveUser,
+    removeWord
 };
