@@ -60,6 +60,12 @@ body {
     grid-gap: 5px 5px;
 }
 
+.letter-used {
+    text-align: center;
+    horiz-align: center;
+    border: 1px solid white;
+}
+
 .letter {
     text-align: center;
     horiz-align: center;

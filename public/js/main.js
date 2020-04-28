@@ -30,7 +30,12 @@ function updateLetterDisplay(letterModel) {
     clearLetterDisplay();
     letterModel.forEach(function (letter, index) {
         let div = document.createElement('div');
-        div.classList.add('letter');
+
+        if (letter.used) {
+            div.classList.add('letter-used');
+        } else {
+            div.classList.add('letter');
+        }
 
         if (letter.revealed) {
             div.innerHTML = `<h1>${letter.letter}</h1>`;

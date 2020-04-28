@@ -6,6 +6,7 @@ function generateLetterModel(letters) {
             letter: letter.toUpperCase(),
             index,
             revealed: false,
+            used: false
         })
     });
 
@@ -34,6 +35,7 @@ function getLetters(letterModel) {
 function useLetters(letterModel, indices) {
     indices.forEach(index => {
         letterModel[index].letter = '';
+        letterModel[index].used = true;
     })
 }
 
