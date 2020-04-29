@@ -18,7 +18,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 const startingLetters = createStartingLetterArray();
 
 let letterModel = generateLetterModel(startingLetters);
-const usedWords = [];
+let usedWords = [];
 
 // Run when client connects
 io.on('connection', socket => {
@@ -96,6 +96,12 @@ io.on('connection', socket => {
     socket.on('disconnect', () => {
         const user = userLeave(socket.id);
         io.emit('update-players', getUsers());
+
+        // if no users left, reset game
+        if (getUsers().length <= 0) {
+            letterModel = generateLetterModel(startingLetters);
+            usedWords = [];
+        }
     })
 });
 
