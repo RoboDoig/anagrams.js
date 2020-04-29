@@ -1,10 +1,8 @@
 const fs = require('fs');
 const wordListPath = require('word-list');
-const wordList = fs.readFileSync(wordListPath, 'utf-8').split('\n');
+const wordList = fs.readFileSync(wordListPath, 'utf-8').split('\n').map(entry => entry.toUpperCase());
+
 console.log(wordList);
-
-
-console.log(wordList.length);
 
 function readWords(path) {
     return fs.readFileSync(path, 'utf8');
