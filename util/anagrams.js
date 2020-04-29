@@ -1,5 +1,6 @@
 const fs = require('fs');
 const wordList = formatWords(readWords('./util/WordList.txt'));
+console.log(wordList);
 
 function readWords(path) {
     return fs.readFileSync(path, 'utf8');
@@ -98,9 +99,3 @@ function wordPossible(word, availableLetters, availableWords) {
 }
 
 module.exports = {wordValid, wordPossible};
-
-// var availableLetters = ['D', 'O', 'A', 'X', 'L', 'S', 'E', 'N'];
-// var availableWords = ['GOD', 'LINK', 'HIT'];
-//
-// var result = wordPossible('hliat', availableLetters, availableWords);
-// console.log(result);
