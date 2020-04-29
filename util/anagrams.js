@@ -1,5 +1,6 @@
 const fs = require('fs');
 const wordList = formatWords(readWords('./util/WordList.txt'));
+console.log(wordList[0][0]);
 
 function readWords(path) {
     return fs.readFileSync(path, 'utf8');
@@ -10,9 +11,6 @@ function formatWords(words) {
 }
 
 function wordValid(word) {
-    console.log(wordList[0]);
-    console.log('----');
-    console.log(wordList[0][0]);
     return wordList.includes(word.toUpperCase());
 }
 
