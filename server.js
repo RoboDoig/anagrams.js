@@ -51,8 +51,10 @@ io.on('connection', socket => {
     socket.on('word-submit', word => {
         console.log('word-submit received');
         console.log(socket.id);
+        console.log(word);
         // check that the word is valid and it wasn't used before
         if (wordValid(word) && !usedWords.includes(word)) {
+            console.log('word valid');
             var allUsers = getUsers();
             var i;
             var result;
