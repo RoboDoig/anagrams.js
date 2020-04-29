@@ -1,10 +1,8 @@
 const fs = require('fs');
-let wordList = formatWords(readWords('./util/WordList.txt'));
+const wordListPath = require('word-list');
+const wordList = fs.readFileSync(wordListPath, 'utf-8').split('\n');
+console.log(wordList);
 
-// bit hacky, server check for file misread
-if (wordList.length < 10) {
-    wordList = wordList[0];
-}
 
 console.log(wordList.length);
 
