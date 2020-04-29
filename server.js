@@ -3,7 +3,7 @@ const http = require('http');
 const express = require('express');
 const socketio = require('socket.io');
 
-const {generateLetterModel, revealLetter, getLetters, useLetters} = require('./util/letter-model');
+const {generateLetterModel, revealLetter, getLetters, useLetters, createStartingLetterArray} = require('./util/letter-model');
 const {userJoin, getUserFromID, getUsers, userLeave, advanceActiveUser, removeWord} = require('./util/users');
 const {wordValid, wordPossible} = require('./util/anagrams');
 
@@ -15,8 +15,10 @@ const io = socketio(server);
 app.use(express.static(path.join(__dirname, 'public')));
 
 // Set up the game
-const startingLetters = ['a', 'b', 'c', 'd', 'e', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'];
+const startingLetters = createStartingLetterArray();
+
 let letterModel = generateLetterModel(startingLetters);
+const usedWords = [];
 
 // Run when client connects
 io.on('connection', socket => {
@@ -46,8 +48,8 @@ io.on('connection', socket => {
 
     // Run whe client submits word
     socket.on('word-submit', word => {
-        // check that the word is valid
-        if (wordValid(word)) {
+        // check that the word is valid and it wasn't used before
+        if (wordValid(word) && !usedWords.includes(word)) {
             var allUsers = getUsers();
             var i;
             var result;
@@ -68,6 +70,8 @@ io.on('connection', socket => {
 
                     // add to users words
                     getUserFromID(socket.id).words.push(word);
+                    // add to server used words
+                    usedWords.push(word);
 
                     // update the player client
                     io.emit('update-players', getUsers());
