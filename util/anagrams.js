@@ -1,5 +1,7 @@
 const fs = require('fs');
 let wordList = formatWords(readWords('./util/WordList.txt'));
+
+console.log(wordList[0].constructor);
 if (wordList[0].constructor === Array) {
     wordList = wordList[0];
 }
