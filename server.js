@@ -4,7 +4,7 @@ const express = require('express');
 const socketio = require('socket.io');
 
 const {generateLetterModel, revealLetter, getLetters, useLetters, createStartingLetterArray} = require('./util/letter-model');
-const {userJoin, getUserFromID, getUsers, userLeave, advanceActiveUser, removeWord} = require('./util/users');
+const {userJoin, getUserFromID, getUsers, userLeave, advanceActiveUser, removeWord, setUserTurn} = require('./util/users');
 const {wordValid, wordPossible} = require('./util/anagrams');
 
 const app = express();
@@ -68,8 +68,9 @@ io.on('connection', socket => {
                         removeWord(i, result.wordIndex);
                     }
 
-                    // add to users words
+                    // add to users words and set turn to this user
                     getUserFromID(socket.id).words.push(word);
+                    setUserTurn(socket.id);
                     // add to server used words
                     usedWords.push(word);
 

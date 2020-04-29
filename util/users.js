@@ -50,6 +50,17 @@ function advanceActiveUser() {
     }
 }
 
+// Set turn to user
+function setUserTurn(id) {
+    users.forEach(user => {
+        if (user.id === id) {
+            user.active = true;
+        } else {
+            user.active = false;
+        }
+    })
+}
+
 function removeWord(userIndex, wordIndex) {
     users[userIndex].words.splice(wordIndex, 1);
 }
@@ -60,5 +71,6 @@ module.exports = {
     getUsers,
     userLeave,
     advanceActiveUser,
-    removeWord
+    removeWord,
+    setUserTurn
 };
