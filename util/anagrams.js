@@ -1,6 +1,6 @@
 const fs = require('fs');
 const wordList = formatWords(readWords('./util/WordList.txt'));
-console.log(wordList[10000]);
+console.log(wordList[11]);
 
 function readWords(path) {
     return fs.readFileSync(path, 'utf8');
