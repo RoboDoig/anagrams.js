@@ -11,6 +11,8 @@ function formatWords(words) {
 
 function wordValid(word) {
     console.log(wordList[0]);
+    console.log('----');
+    console.log(wordList[0][0]);
     return wordList.includes(word.toUpperCase());
 }
 
