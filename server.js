@@ -53,6 +53,8 @@ io.on('connection', socket => {
         console.log(socket.id);
         console.log(word);
         // check that the word is valid and it wasn't used before
+        console.log(wordValid);
+        console.log(usedWords);
         if (wordValid(word) && !usedWords.includes(word)) {
             console.log('word valid');
             var allUsers = getUsers();
