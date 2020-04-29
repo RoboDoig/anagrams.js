@@ -1,8 +1,8 @@
 const fs = require('fs');
 let wordList = formatWords(readWords('./util/WordList.txt'));
 
-console.log(wordList[0].constructor);
-if (wordList[0].constructor === Array) {
+// bit hacky, server check for file misread
+if (wordList.length < 10) {
     wordList = wordList[0];
 }
 
