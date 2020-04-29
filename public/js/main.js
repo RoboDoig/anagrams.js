@@ -64,8 +64,6 @@ function updatePlayerDisplay(users) {
         playerArea.appendChild(div);
 
         let wordContainer = div.querySelector('.word-container');
-        console.log(user, wordContainer, index);
-        console.log(user.words.map(word => `<h3>${word}</h3>`).join(''));
 
         wordContainer.innerHTML = user.words.map(word => `<h3>${word}</h3>`).join('');
     });

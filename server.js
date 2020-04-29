@@ -33,6 +33,7 @@ io.on('connection', socket => {
 
     // Run when client requests letter reveal
     socket.on('reveal', index => {
+        console.log(socket.id);
         if (getUserFromID(socket.id).active && letterModel[index.index].revealed === false) {
             // if it is this user's turn, reveal a letter if available
             revealLetter(letterModel, index.index);
@@ -56,7 +57,6 @@ io.on('connection', socket => {
             for (i = 0; i < allUsers.length; i++) {
                 var userWords = allUsers[i].words;
                 result = wordPossible(word, getLetters(letterModel), userWords);
-                console.log(result);
                 if (result.wordPossible) {
                     // remove used letters
                     if (result.letterIndices.length > 0) {
